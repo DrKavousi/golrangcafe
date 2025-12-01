@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golrang Executive Café Network</title>
+    <!-- Google Font: Vazirmatn for Persian -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --dark-wood: #2c241b;
+            --card-bg: rgba(20, 20, 20, 0.85); /* Slightly darker card to contrast with brighter background */
+            --text-main: #e0e0e0;
+            --text-highlight: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #2c241b; /* Fallback wood color */
+            color: var(--text-main);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* --- Background Handling --- */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image: url('img.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* This ensures the image stays clear */
+            filter: brightness(1.1); 
+        }
+        
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Much lighter overlay to let the background image show through */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Typography --- */
+        h1, h2, h3, h4 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .highlight-text {
+            color: var(--gold-light);
+            font-weight: bold;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: var(--gold);
+            color: #000;
+            padding: 2px 10px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: 120px 20px 80px;
+            margin-bottom: 20px;
+        }
+
+        header h3 {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin: 20px 0;
+            color: #fff;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        }
+
+        header p {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: #f0f0f0;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        /* --- Cards --- */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-right: 5px solid var(--gold);
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.6);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .section-title i {
+            font-size: 1.8rem;
+            color: var(--gold);
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- Middle Image Placeholder --- */
+        .featured-image-wrapper {
+            margin: 60px 0;
+            position: relative;
+            border: 3px solid var(--gold);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .featured-image-wrapper img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .featured-image-wrapper:hover img {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: var(--gold-light);
+            padding: 40px 20px 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        /* --- Layouts --- */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        ul { list-style: none; }
+        ul li {
+            margin-bottom: 12px;
+            padding-right: 25px;
+            position: relative;
+        }
+        ul li::before {
+            content: '\f0da';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--gold);
+            position: absolute;
+            right: 0;
+            top: 2px;
+        }
+
+        /* Grid for Scenarios */
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .use-case-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .use-case-item:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.15);
+        }
+        .use-case-item i {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Resources Grid */
+        .resources-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .resource-col {
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 3px solid var(--gold);
+        }
+        .resource-col h4 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .resource-col ul li { font-size: 0.9rem; color: #ccc; }
+
+        /* Impact Matrix */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .impact-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0,0,0,0.6));
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .impact-box h4 {
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+            padding-bottom: 5px;
+        }
+
+        /* --- Footer --- */
+        .conclusion {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(0,0,0,0.85); /* Dark background for readability */
+            margin-top: 40px;
+            border-top: 3px solid var(--gold);
+            border-radius: 12px 12px 0 0;
+        }
+        .conclusion h2 { font-size: 2rem; color: #fff; }
+        .conclusion p { font-size: 1.2rem; max-width: 800px; margin: 20px auto; }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .split-layout { grid-template-columns: 1fr; }
+            .impact-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND IMAGES -->
+    <div class="bg-container"></div>
+    <div class="bg-overlay"></div>
+
+    <div class="container">
+        
+        <!-- HERO HEADER -->
+        <header>
+            <h3>Business-Class Coffee Experience</h3>
+            <h1>پروژه: Golrang Executive Café Network</h1>
+            <p>گلرنگ، رنگ زندگی حرفه‌ای</p>
+        </header>
+
+        <!-- SECTION 1: CHALLENGE -->
+        <section class="card">
+            <div class="section-title">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <h2>۱) چالش کلیدی</h2>
+            </div>
+            <p style="margin-bottom: 15px;">
+                در ساختار فعلی، گروه صنعتی گلرنگ با یک شکاف جدی مواجه است:
+                <strong class="highlight-text">نبود فضای رسمی، بی‌طرف، امن و استاندارد برای برگزاری جلسات کاری، مذاکرات B2B و تعاملات مدیریتی سطح‌بالا.</strong>
+            </p>
+            <p>
+                جلسات مهم امروز ناچار در کافه‌های عمومی، لابی‌ هتل‌ها یا لوکیشن‌های غیرکنترل‌شده برگزار می‌شود؛ محیط‌هایی که فاقد دیسیپلین حرفه‌ای، حریم خصوصی، امکانات تکنولوژیک و سطح تجربه متناسب با اعتبار گلرنگ هستند.
+            </p>
+            <div style="margin-top: 15px; padding: 15px; background: rgba(255,0,0,0.15); border-radius: 8px; border-right: 3px solid #ff4444;">
+                <p><strong>نتیجه:</strong> کاهش کیفیت تصمیم‌گیری، تضعیف برداشت حرفه‌ای شرکای تجاری، اتلاف زمان، ناهمگونی تجربه برند و محدودیت در برگزاری جلسات محرمانه.</p>
+            </div>
+            <div class="section-tag">Business</div>
+        </section>
+
+        <!-- SECTION 2: SOLUTION -->
+        <section class="card">
+            <div class="section-title">
+                <i class="fa-solid fa-lightbulb"></i>
+                <h2>۲) راهکار نوآورانه</h2>
+            </div>
+            <p class="highlight-text" style="font-size: 1.1em; margin-bottom: 20px;">ایجاد نخستین شبکه کافه‌های بیزینس‌کلاس ایران، تحت برند گلرنگ</p>
+            
+            <div class="split-layout">
+                <div>
+                    <p>این پروژه یک کافه نیست؛ یک اکوسیستم <strong>Hospitality سازمانی</strong> است که جلسات مهم را در محیطی کاملاً کنترل‌شده، لوکس، بی‌طرف و مجهز برگزار می‌کند.</p>
+                    <p style="margin-top:10px;">این شبکه در تهران، شهرهای کلیدی و نزدیک فرودگاه امام راه‌اندازی می‌شود و استانداردی شبیه <span style="color:var(--gold);">Business Lounge</span> فرودگاه‌های بین‌المللی ارائه می‌دهد.</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px;">
+                    <h4 style="color:#fff;">امکانات کلیدی:</h4>
+                    <ul>
+                        <li>فضای جلسه خصوصی و نیمه‌خصوصی</li>
+                        <li>اینترنت اختصاصی Enterprise</li>
+                        <li>AV Systems حرفه‌ای</li>
+                        <li>عایق صوتی، نور استاندارد، امنیت دیجیتال</li>
+                        <li>تجربه مهمان‌نوازی VIP و کد رفتاری سختگیرانه</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-style: italic; color: #aaa;">این راهکار سرعت تصمیم‌گیری را افزایش، هزینه‌های عملیاتی را کاهش و اعتبار برند گلرنگ را تقویت می‌کند.</p>
+            <div class="section-tag">Business</div>
+        </section>
+
+        <!-- *** MIDDLE IMAGE PLACEHOLDER *** -->
+        <div class="featured-image-wrapper">
+            <!-- The code below looks for img.png. If not found, it shows a text box. -->
+            <img src="img.png" alt="Executive Room Design" onerror="this.style.display='none'; this.nextElementSibling.style.position='relative'; this.nextElementSibling.style.background='rgba(50,40,30,0.9)'; this.nextElementSibling.innerHTML='<br><br><i class=\'fa-solid fa-image\'></i><br>تصویر طرح (img.png) در اینجا نمایش داده می‌شود<br><br>';">
+            <div class="image-caption">تجربه محیطی گلرنگ: لوکس، آرام و حرفه‌ای</div>
+        </div>
+        <!-- ******************************** -->
+
+        <!-- SECTION 3: SCENARIOS -->
+        <section class="card">
+            <div class="section-title">
+                <i class="fa-solid fa-compass"></i>
+                <h2>۳) موقعیت‌هایی که چالش بروز می‌کند</h2>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-item">
+                    <i class="fa-solid fa-handshake"></i>
+                    <p>مذاکرات B2B که برگزاری جلسه در دفاتر طرفین مناسب نیست</p>
+                </div>
+                <div class="use-case-item">
+                    <i class="fa-solid fa-user-secret"></i>
+                    <p>جلسات محرمانه، حساس یا استراتژیک</p>
+                </div>
+                <div class="use-case-item">
+                    <i class="fa-solid fa-plane-departure"></i>
+                    <p>دیدار با شرکای خارجی به‌ویژه نزدیک فرودگاه امام</p>
+                </div>
+                <div class="use-case-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <p>جلسات فوری که نیازمند فضای آماده و استاندارد هستند</p>
+                </div>
+                <div class="use-case-item">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <p>جلسات بین‌واحدی که به امکانات فنی حرفه‌ای نیاز دارند</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: var(--gold);">این لحظات، نیاز به فضای حرفه‌ای بی‌طرف را حیاتی می‌کنند.</p>
+            <div class="section-tag">Business</div>
+        </section>
+
+        <!-- SECTION 4: RESOURCES -->
+        <section class="card">
+            <div class="section-title">
+                <i class="fa-solid fa-layer-group"></i>
+                <h2>۴) منابع موردنیاز برای اجرا</h2>
+            </div>
+            
+            <div class="resources-wrapper">
+                <!-- Human Resources -->
+                <div class="resource-col">
+                    <h4><i class="fa-solid fa-users"></i> الف) منابع انسانی</h4>
+                    <ul>
+                        <li>مدیر پروژه با تجربه Hospitality</li>
+                        <li>مدیر عملیات بیزینس‌کلاس</li>
+                        <li>طراح تجربه مشتری</li>
+                        <li>تیم آموزش رفتار حرفه‌ای (Etiquette)</li>
+                        <li>باریستای حرفه‌ای، میزبان VIP، تیم IT On-site</li>
+                    </ul>
+                    <p style="font-size: 0.8rem; margin-top:10px; color:var(--gold);">استاندارد Global Hospitality</p>
+                </div>
+
+                <!-- Tech Resources -->
+                <div class="resource-col">
+                    <h4><i class="fa-solid fa-server"></i> ب) منابع فناورانه</h4>
+                    <ul>
+                        <li>پلتفرم رزرو آنلاین و مدیریت ظرفیت</li>
+                        <li>اینترنت اختصاصی پایدار</li>
+                        <li>AV Systems حرفه‌ای</li>
+                        <li>امنیت دیجیتال برای ارتباطات B2B</li>
+                        <li>یکپارچگی API با سیستم‌های داخلی</li>
+                    </ul>
+                </div>
+
+                <!-- Financial Resources -->
+                <div class="resource-col">
+                    <h4><i class="fa-solid fa-coins"></i> ج) منابع مالی</h4>
+                    <ul>
+                        <li>CAPEX برای ساخت و تجهیز</li>
+                        <li>OPEX برای دوره استقرار و آموزش</li>
+                        <li>بودجه توسعه شعب بعدی</li>
+                    </ul>
+                    <p style="font-size: 0.8rem; margin-top:10px;">کاهش هزینه‌ها به دلیل مقیاس هلدینگ</p>
+                </div>
+
+                <!-- Construction -->
+                <div class="resource-col">
+                    <h4><i class="fa-solid fa-hard-hat"></i> د) منابع عمرانی</h4>
+                    <ul>
+                        <li>طراحی Business-Class</li>
+                        <li>مبلمان تخصصی جلسات</li>
+                        <li>عایق صوتی حرفه‌ای</li>
+                        <li>نورپردازی و تهویه استاندارد</li>
+                    </ul>
+                </div>
+
+                <!-- Brand -->
+                <div class="resource-col">
+                    <h4><i class="fa-solid fa-star"></i> هـ) منابع برند</h4>
+                    <ul>
+                        <li>اعتبار ملی برند گلرنگ</li>
+                        <li>شبکه ارتباطات زیرمجموعه‌ها</li>
+                        <li>شعار «گلرنگ، رنگ زندگی حرفه‌ای»</li>
+                        <li>استانداردهای Brand Experience</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="section-tag">Business</div>
+        </section>
+
+        <!-- SECTION 5: IMPACT -->
+        <section class="card">
+            <div class="section-title">
+                <i class="fa-solid fa-chart-line"></i>
+                <h2>۵) اثرگذاری‌های کلیدی راهکار</h2>
+            </div>
+            
+            <div class="impact-grid">
+                <div class="impact-box">
+                    <h4><i class="fa-solid fa-money-bill-wave"></i> مالی</h4>
+                    <ul>
+                        <li>ایجاد درآمد از خدمات فضا، اشتراک و F&B</li>
+                        <li>کاهش هزینه‌های پراکندگی جلسات</li>
+                        <li>افزایش بهره‌وری زمانی مدیران</li>
+                    </ul>
+                </div>
+                <div class="impact-box">
+                    <h4><i class="fa-solid fa-gears"></i> عملیاتی</h4>
+                    <ul>
+                        <li>یکپارچگی جلسات داخلی و بین‌شرکتی</li>
+                        <li>سرعت در هماهنگی و تصمیم‌سازی</li>
+                        <li>افزایش کیفیت جلسات (تمرکز و تکنولوژی)</li>
+                    </ul>
+                </div>
+                <div class="impact-box">
+                    <h4><i class="fa-solid fa-copyright"></i> برندینگ</h4>
+                    <ul>
+                        <li>تثبیت گلرنگ به‌عنوان برند حرفه‌ای جهانی</li>
+                        <li>تقویت اعتماد شرکای تجاری</li>
+                        <li>تجربه منسجم برای مهمانان خارجی</li>
+                    </ul>
+                </div>
+                <div class="impact-box">
+                    <h4><i class="fa-solid fa-chess-knight"></i> استراتژیک</h4>
+                    <ul>
+                        <li>خلق مزیت رقابتی غیرقابل تقلید</li>
+                        <li>مرجع رسمی جلسات حرفه‌ای</li>
+                        <li>زیرساخت توسعه سرویس‌های جدید</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 25px; font-weight: bold;">این طرح، گلرنگ را به سطح جدیدی از حرفه‌ای‌گری و نفوذ B2B می‌رساند.</p>
+            <div class="section-tag">Business</div>
+        </section>
+
+        <!-- CONCLUSION -->
+        <div class="conclusion">
+            <h2>جمع‌بندی ارزش‌آفرین</h2>
+            <div style="width: 100px; height: 3px; background: var(--gold); margin: 20px auto;"></div>
+            <p><strong style="color: var(--gold);">Golrang Executive Café</strong> تنها یک کافه نیست؛<br>یک زیرساخت حرفه‌ای برای زندگی کاری مدیران کشور است.</p>
+            <p style="font-size: 1rem; color: #ccc;">این طرح، هم درآمدزا است، هم اعتبار برند را تقویت می‌کند، هم تجربه حرفه‌ای را متحول می‌سازد، و گلرنگ را به اولین ارائه‌دهنده Business-Class Hospitality سازمانی در ایران تبدیل می‌کند.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
